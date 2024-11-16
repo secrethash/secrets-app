@@ -63,7 +63,8 @@ export default function Home() {
             Showcase
           </a>
         </div>
-        <div className="flex flex-wrap items-center justify-center text-gray-600 p-5">&copy; Copyright {Date().split(" ")[3]}, Shashwat Mishra</div>
+        <div className="flex flex-wrap items-center justify-center text-gray-600 pt-5">&copy;Copyright {Date().split(" ")[3]} Shashwat Mishra</div>
+        <div className="flex flex-wrap items-center justify-center text-gray-600">All rights reserved.</div>
       </footer>
     </div>
   );
