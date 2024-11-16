@@ -63,7 +63,8 @@ export default function Home() {
             Go to frore.co →
           </a>
         </div>
-        <div className="flex flex-wrap items-center justify-center text-gray-600 p-5">&copy; Copyright {Date().split(" ")[3]}, frore<span className="text-[#8286ff]">.</span>co</div>
+        <div className="flex flex-wrap items-center justify-center text-gray-600 pt-5">&copy;Copyright {Date().split(" ")[3]} frore<span className="text-[#8286ff]">.</span>co</div>
+        <div className="flex flex-wrap items-center justify-center text-gray-600">All rights reserved.</div>
       </footer>
     </div>
   );
