@@ -13,7 +13,7 @@ Secret sharing application using Asymmetric Encryption (public/private key pair)
 
 ## Roadmap
 
-- [ ] Add Authentication using [Supabase Auth](https://supabase.com/docs/guides/auth/server-side/nextjs)
+- [x] Add Authentication using [Supabase Auth](https://supabase.com/docs/guides/auth/server-side/nextjs)
 - [ ] Limit fetch from supabase for authenticated users (maybe with roles/permissions)
 
 ## Installation
