@@ -19,6 +19,8 @@ Secret sharing application using Asymmetric Encryption (public/private key pair)
 - 🔐 Encrypt a secret with a Public Key (also fetch from supabase)
 - 🔓 Decrypt a secret with a Private Key
 
+https://github.com/user-attachments/assets/8e5b29e9-6408-490b-a73b-3c171c4a6043
+
 ## Roadmap
 
 - [x] Add Authentication using [Supabase Auth](https://supabase.com/docs/guides/auth/server-side/nextjs)
