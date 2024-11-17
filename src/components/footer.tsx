@@ -6,14 +6,14 @@ export default function Footer() {
         <div className="flex gap-6 flex-wrap items-center justify-center">
           <a
             className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-            href="https://frore.atlassian.net/wiki/x/JYHxAw"
+            href="https://blog.frore.co/posts/sharing-secrets-with-confidence"
             target="_blank"
             rel="noopener noreferrer"
           >
             <Image
               aria-hidden
-              src="/confluence.svg"
-              alt="Confluence icon"
+              src="/file.svg"
+              alt="blog icon"
               width={16}
               height={16}
             />
