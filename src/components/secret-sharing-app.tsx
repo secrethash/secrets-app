@@ -1,5 +1,5 @@
 "use client";
-import { BadgeInfo } from "lucide-react";
+import { BadgeInfo, LogOutIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -23,6 +23,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { logout } from "@/app/login/actions";
+import { toast } from "@/hooks/use-toast";
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -31,6 +33,12 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error("Missing Supabase environment variables");
 }
+
+// const user = async () => {
+//   return await supabase.auth.getUser();
+// };
+
+// const toast = useToast()
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -106,7 +114,11 @@ export function SecretSharingAppComponent() {
     console.log("Supabase Client: ", supabase);
 
     if (error) {
-      console.error("Error saving public key:", error);
+      toast({
+        title: "Error saving public key",
+        description: error.message,
+        variant: "destructive",
+      });
     } else {
       fetchPublicKeys();
     }
@@ -142,11 +154,14 @@ export function SecretSharingAppComponent() {
         String.fromCharCode.apply(null, encryptedArray)
       );
       setEncryptedMessage(encryptedBase64);
-    } catch (error) {
-      console.error("Error encrypting message:", error);
-      setEncryptedMessage(
-        "Error: Invalid public key format or encryption failed"
-      );
+    } catch {
+      toast({
+        title: "Error encrypting message",
+        description: "Error: Invalid public key format or encryption failed",
+        variant: "destructive",
+      });
+
+      setEncryptedMessage("");
     }
   };
 
@@ -179,11 +194,13 @@ export function SecretSharingAppComponent() {
       const decoder = new TextDecoder();
       const decryptedText = decoder.decode(decryptedBuffer);
       setDecryptedMessage(decryptedText);
-    } catch (error) {
-      console.error("Error decrypting message:", error);
-      setDecryptedMessage(
-        "Error: Invalid private key format or decryption failed"
-      );
+    } catch {
+      toast({
+        title: "Error decrypting message",
+        description: "Error: Invalid private key format or decryption failed",
+        variant: "destructive",
+      });
+      setDecryptedMessage("");
     }
   };
 
@@ -197,12 +214,22 @@ export function SecretSharingAppComponent() {
 
   return (
     <div className="container mx-auto p-4 space-y-6 max-w-7xl">
-      <Card className="max-w-md w-full">
+      <Card className="max-w-md w-full relative">
         <CardHeader>
-          <CardTitle>Secret Sharing App</CardTitle>
-          <CardDescription>
-            Share secrets using asymmetric encryption
-          </CardDescription>
+          <div className="absolute top-0 right-0">
+            <Button
+              className="text-red-500 hover:bg-red-500 text-white rounded-tl-none rounded-br-none"
+              onClick={logout}
+            >
+              <LogOutIcon /> Logout
+            </Button>
+          </div>
+          <div>
+            <CardTitle>Secret Sharing App</CardTitle>
+            <CardDescription>
+              Share secrets using asymmetric encryption
+            </CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="generate">
@@ -354,7 +381,8 @@ export function SecretSharingAppComponent() {
                 <BadgeInfo className="h-4 w-4" />
                 <AlertTitle>Decrypt with Private Key</AlertTitle>
                 <AlertDescription className="text-gray-600">
-                  Decrypt the secret with your own private key and encrypted message.
+                  Decrypt the secret with your own private key and encrypted
+                  message.
                 </AlertDescription>
               </Alert>
               <div>
