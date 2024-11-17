@@ -6,8 +6,17 @@ import { Button } from "@/components/ui/button";
 import { BadgeAlertIcon, MoveLeft } from "lucide-react";
 import Image from "next/image";
 import { redirect, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 export default function ErrorPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ErrorContent />
+    </Suspense>
+  );
+}
+
+function ErrorContent() {
   const searchParams = useSearchParams();
   const error = decodeURIComponent(
     searchParams.get("error") ?? "Oops! Error Occurred!"

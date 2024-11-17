@@ -16,7 +16,7 @@ export async function login(formData: FormData) {
     const { error } = await supabase.auth.signInWithPassword(data)
 
     if (error) {
-        console.log(error)
+        // console.log(error)
         const params = new URLSearchParams({
             error: 'Login failed',
             error_description: encodeURIComponent(error.message)
@@ -46,7 +46,7 @@ export async function register(formData: FormData) {
     const { error } = await supabase.auth.signUp(data)
 
     if (error) {
-        console.log(error)
+        // console.log(error)
         const params = new URLSearchParams({
             error: 'Registration failed',
             error_description: encodeURIComponent(error.message)

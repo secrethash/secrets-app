@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { login, register } from "./actions";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { BadgeInfo } from "lucide-react";
+import { BadgeInfo, LogIn, UserPlus2 } from "lucide-react";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -70,9 +70,15 @@ export default function LoginPage() {
                       required
                     />
                   </div>
-                  <div className="flex justify-between py-7">
-                    <Button formAction={login}>Login</Button>
-                    <Button formAction={register}>Register</Button>
+                  <div className="flex gap-4 items-center justify-between py-7">
+                    <Button formAction={register} className="w-full bg-transparent outline outline-black outline-2 text-black hover:text-white">
+                      <UserPlus2 className="mr-2 h-4 w-4" />
+                      Register
+                    </Button>
+                    <Button formAction={login} className="w-full outline outline-2 outline-black">
+                      <LogIn className="mr-2 h-4 w-4" />
+                      Login
+                    </Button>
                   </div>
                 </form>
               </div>
