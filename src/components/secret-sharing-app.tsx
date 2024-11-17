@@ -218,7 +218,7 @@ export function SecretSharingAppComponent() {
         <CardHeader>
           <div className="absolute top-0 right-0">
             <Button
-              className="text-red-500 hover:bg-red-500 text-white rounded-tl-none rounded-br-none"
+              className="text-red-500 hover:bg-red-500 text-white rounded-tl-none rounded-br-none hover:shadow-xl transition duration-300 ease-in-out"
               onClick={logout}
             >
               <LogOutIcon /> Logout
