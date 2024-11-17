@@ -3,13 +3,24 @@
 import { useToast } from "@/hooks/use-toast";
 import { useSearchParams } from "next/navigation";
 import { Toaster } from "./ui/toaster";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 export default function Toast() {
+  
+  return (
+    <Suspense>
+      <ToastComponent />
+    </Suspense>
+  )
+}
+
+function ToastComponent() {
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
-  const error_message = decodeURIComponent(searchParams.get("error_description") ?? '');
+  const error_message = decodeURIComponent(
+    searchParams.get("error_description") ?? ""
+  );
   const success = searchParams.get("success");
   const message = searchParams.get("message");
   const title = searchParams.get("title");
@@ -33,7 +44,5 @@ export default function Toast() {
     }
   }, [error, success, triggered, toast, error_message, message, title]);
 
-  return (
-    <Toaster />
-  )
+  return <Toaster />;
 }
