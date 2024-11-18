@@ -2,13 +2,16 @@
 
 # Secrets Sharing App
 
-> :warning: **This is a completely experimental project and should not be used in production.**
+> :warning: **This is a completely experimental (proof-of-concept) project and should be used at your own risk.**
 
 Secret sharing application using Asymmetric Encryption (public/private key pair). We can create a new Key Pair and save the Public Key to a Supabase DB table. We can then encrypt a secret with the Public Key and decrypt it with the Private Key.
 
-## Use Case
+The encryption & decryption is done using `RSA-OAEP` algorithm, for which the keys are 2048 bits long & supports asymmetric encryption. The application generates & accepts Private & Public Keys in `JWK` format.
 
-- Sharing Username/Password with a team member over an email
+## Use Case (example)
+
+- Securely Sharing Username/Password with a team member over an email as an encrypted text
+- Sharing `.env` files with a team member over slack/teams as an encrypted text
 - Sharing sensitive information with a third party
 - Sharing sensitive information with a client
 
@@ -17,14 +20,19 @@ Secret sharing application using Asymmetric Encryption (public/private key pair)
 - 🔑 Create new Key Pair (public/private)
 - 🛅 Save Public Keys to Supabase DB table
 - 🔐 Encrypt a secret with a Public Key (also fetch from supabase)
-- 🔓 Decrypt a secret with a Private Key
+- 🔓 Decrypt a secret only by a Private Key
+
+## Demo Video
 
 https://github.com/user-attachments/assets/8e5b29e9-6408-490b-a73b-3c171c4a6043
 
 ## Roadmap
 
-- [x] Add Authentication using [Supabase Auth](https://supabase.com/docs/guides/auth/server-side/nextjs)
-- [ ] Limit fetch from supabase for authenticated users (maybe with roles/permissions)
+- [x] **Persistence:** Add Supabase DB table to store Public Keys with titles
+- [x] **Authn:** Add Authentication using [Supabase Auth](https://supabase.com/docs/guides/auth/server-side/nextjs)
+- [ ] **Security:** Add ECDA (Elliptic Curve Digital Signature Algorithm) support to sign the encrypted secret for increased security
+- [ ] **Chore:** Cleanup application code style and structure (project was created as a Proof of Concept)
+- [ ] **Authz:** Limit fetch from supabase for authenticated & authorized users (something roles/permissions)
 
 ## Installation
 
@@ -72,7 +80,7 @@ bun install
 
 ## Registration
 
-As this tool is meant for internal or personal use, the registration is limited to your projects organization members only (on supabase). To open up the registration you need to setup custom SMTP provider in the [Supabase Authentication](https://supabase.com/docs/guides/auth/auth-smtp) settings.
+As this tool is meant for internal or personal use, the registration is limited to your projects organization members only (on supabase). To open up the registration you may need to setup custom SMTP provider in the [Supabase Authentication](https://supabase.com/docs/guides/auth/auth-smtp) settings.
 
 ## Disclaimer
 
@@ -80,9 +88,7 @@ This project is for internal purposes only. It is not intended to be used for an
 
 ## Licence
 
-The project is a **commercial software licensed under the Proprietary License**. All rights reserved.
-
-You can freely use & modify the project for your personal or internal purposes. However, you are not allowed to distribute, sell, or use the project for any commercial purposes without the explicit permission of the author.
+This project is an open-sourced software licensed under the [MIT license](./LICENSE.md).
 
 <br><br>
 ---
