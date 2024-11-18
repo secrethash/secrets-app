@@ -8,6 +8,10 @@ Secret sharing application using Asymmetric Encryption (public/private key pair)
 
 The encryption & decryption is done using `RSA-OAEP` algorithm, for which the keys are 2048 bits long & supports asymmetric encryption. The application generates & accepts Private & Public Keys in `JWK` format.
 
+## On-click deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffroreco%2Fsecrets-app%2Ftree%2Fmain&env=NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY&envDescription=Supabase%20URL%20%26%20Keys&project-name=secrets-sharing-app&repository-name=secrets-sharing-app&redirect-url=https%3A%2F%2Fgithub.com%2Ffroreco%2Fsecrets-app%2Ftree%2Fmain)
+
 ## Use Case (example)
 
 - Securely Sharing Username/Password with a team member over an email as an encrypted text
