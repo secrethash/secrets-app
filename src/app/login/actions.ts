@@ -1,8 +1,8 @@
 'use server'
 
-import { createClient } from "@/utils/supabase/server"
-import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
+import { createClient } from '@/utils/supabase/server'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 export async function login(formData: FormData) {
     const supabase = await createClient()
@@ -10,7 +10,7 @@ export async function login(formData: FormData) {
     // Todo: instead of typecasting validate the inputs
     const data = {
         email: formData.get('email') as string,
-        password: formData.get('password') as string
+        password: formData.get('password') as string,
     }
 
     const { error } = await supabase.auth.signInWithPassword(data)
@@ -19,7 +19,7 @@ export async function login(formData: FormData) {
         // console.log(error)
         const params = new URLSearchParams({
             error: 'Login failed',
-            error_description: encodeURIComponent(error.message)
+            error_description: encodeURIComponent(error.message),
         })
         redirect('/error?' + params.toString())
     }
@@ -27,7 +27,7 @@ export async function login(formData: FormData) {
     const params = new URLSearchParams({
         success: 'true',
         title: 'Login successful',
-        message: 'You have been logged in successfully!'
+        message: 'You have been logged in successfully!',
     })
 
     revalidatePath('/', 'layout')
@@ -40,7 +40,7 @@ export async function register(formData: FormData) {
     // ToDo: instead of typecasting validate the inputs
     const data = {
         email: formData.get('email') as string,
-        password: formData.get('password') as string
+        password: formData.get('password') as string,
     }
 
     const { error } = await supabase.auth.signUp(data)
@@ -49,7 +49,7 @@ export async function register(formData: FormData) {
         // console.log(error)
         const params = new URLSearchParams({
             error: 'Registration failed',
-            error_description: encodeURIComponent(error.message)
+            error_description: encodeURIComponent(error.message),
         })
 
         redirect('/error?' + params.toString())
@@ -58,8 +58,9 @@ export async function register(formData: FormData) {
     const params = new URLSearchParams({
         success: 'true',
         title: 'Registration successful',
-        message: 'You have been registered successfully! Please check your email for confirmation.'
-    }) 
+        message:
+            'You have been registered successfully! Please check your email for confirmation.',
+    })
 
     revalidatePath('/', 'layout')
     redirect('/?' + params.toString())
@@ -73,7 +74,7 @@ export async function logout() {
     const params = new URLSearchParams({
         success: 'true',
         title: 'Logged out successfully',
-        message: 'You have been logged out successfully!'
+        message: 'You have been logged out successfully!',
     })
 
     revalidatePath('/?' + params.toString(), 'layout')
