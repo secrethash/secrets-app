@@ -44,8 +44,8 @@ export default function Footer() {
                         aria-hidden
                         src="/globe.svg"
                         alt="Globe icon"
-                        width={20}
-                        height={20}
+                        width={22}
+                        height={22}
                     />
                     Showcase
                 </a>

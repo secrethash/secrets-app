@@ -144,7 +144,7 @@ export function SecretSharingAppComponent() {
 
     return (
         <div className="container mx-auto p-4 space-y-6 max-w-7xl">
-            <Card className="max-w-md w-full relative">
+            <Card className="max-w-md w-full relative min-w-sm">
                 <CardHeader>
                     <div className="absolute top-0 right-0">
                         <Button
@@ -154,7 +154,7 @@ export function SecretSharingAppComponent() {
                             <LogOutIcon /> Logout
                         </Button>
                     </div>
-                    <div>
+                    <div className='pt-5'>
                         <CardTitle>Secret Sharing App</CardTitle>
                         <CardDescription>
                             Share secrets using asymmetric encryption
