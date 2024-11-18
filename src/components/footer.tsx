@@ -44,10 +44,10 @@ export default function Footer() {
                         aria-hidden
                         src="/frore-icon.svg"
                         alt="Globe icon"
-                        width={20}
-                        height={20}
+                        width={22}
+                        height={22}
                     />
-                    Go to frore.co →
+                    frore.co →
                 </a>
             </div>
             <div className="flex flex-wrap items-center justify-center text-gray-600 pt-5">
