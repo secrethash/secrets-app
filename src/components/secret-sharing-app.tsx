@@ -27,8 +27,6 @@ import { toast } from '@/hooks/use-toast'
 import supabase from '@/lib/supabase'
 import encrypter from '@/lib/encrypter'
 
-const enc = encrypter('RSA-OAEP')
-
 export function SecretSharingAppComponent() {
     const [publicKey, setPublicKey] = useState<string>('')
     const [privateKey, setPrivateKey] = useState<string>('')
@@ -41,6 +39,7 @@ export function SecretSharingAppComponent() {
         Array<{ id: string; title: string; key: string }>
     >([])
     const [selectedPublicKey, setSelectedPublicKey] = useState<string>('')
+    const enc = encrypter('RSA-OAEP')
 
     useEffect(() => {
         fetchPublicKeys()
@@ -71,7 +70,10 @@ export function SecretSharingAppComponent() {
         let saved = true
 
         if (savePublicKey && publicKeyTitle) {
-            saved = await savePublicKeyToSupabase(publicKeyString, publicKeyTitle)
+            saved = await savePublicKeyToSupabase(
+                publicKeyString,
+                publicKeyTitle
+            )
         }
 
         if (!saved) {
@@ -156,7 +158,7 @@ export function SecretSharingAppComponent() {
                             <LogOutIcon /> Logout
                         </Button>
                     </div>
-                    <div className='pt-5'>
+                    <div className="pt-5">
                         <CardTitle>Secret Sharing App</CardTitle>
                         <CardDescription>
                             Share secrets using asymmetric encryption
