@@ -1,113 +1,62 @@
-type Encrypted = {
+import RSA_OAEP from "./algorithms/RSA_OAEP"
+
+export interface Encrypted {
     encrypted: string
 }
-type Decrypted = {
+export type Decrypted = {
     decrypted: string
 }
 
-export type Encrypt = (
-    publicKey: JsonWebKey,
-    data: string
-) => Promise<Encrypted>
-
-export type decrypt = (
-    publicKey: JsonWebKey,
-    data: string
-) => Promise<Decrypted>
-
-export const encrypter = {
-    getJwkKeyPair,
-    encrypt,
-    decrypt,
+export interface CryptoKeyPair {
+    privateKey: CryptoKey
+    publicKey: CryptoKey
+}
+export interface JsonKeyPair {
+    privateKey: JsonWebKey
+    publicKey: JsonWebKey
 }
 
-async function generateKeyPair(): Promise<CryptoKeyPair> {
-    const keyPair = await window.crypto.subtle.generateKey(
-        {
-            name: 'RSA-OAEP',
-            modulusLength: 2048,
-            publicExponent: new Uint8Array([1, 0, 1]),
-            hash: 'SHA-256',
-        },
-        true,
-        ['encrypt', 'decrypt']
-    )
-    return { privateKey: keyPair.privateKey, publicKey: keyPair.publicKey }
+export interface Encrypter {
+    getJwkKeyPair: () => Promise<JsonKeyPair>
+    encrypt: (publicKey: string, data: string) => Promise<Encrypted>
+    decrypt: (privateKey: string, data: string) => Promise<Decrypted>
 }
 
-async function getJwkKeyPair() {
-    return generateKeyPair()
-        .then((keyPair) => {
-            return Promise.all([
-                window.crypto.subtle.exportKey('jwk', keyPair.publicKey),
-                window.crypto.subtle.exportKey('jwk', keyPair.privateKey),
-            ])
-        })
-        .then((jwkKeys) => {
-            return { publicKey: jwkKeys[0], privateKey: jwkKeys[1] }
-        })
+export interface AlgoLib extends Encrypter {
+    generateKeyPair: () => Promise<CryptoKeyPair>
 }
 
-async function encrypt(publicKey: string, data: string): Promise<Encrypted> {
-    const publicKeyObj = JSON.parse(publicKey)
-    const importedPublicKey = await window.crypto.subtle.importKey(
-        'jwk',
-        publicKeyObj,
-        {
-            name: 'RSA-OAEP',
-            hash: 'SHA-256',
-        },
-        true,
-        ['encrypt']
-    )
+type AlgoConstructor = new () => AlgoLib
 
-    const encoder = new TextEncoder()
-    const encodedMessage = encoder.encode(data)
+export type Algorithms = 'RSA-OAEP' //| 'ECDH' | 'ECDSA' // Todo
 
-    const encryptedBuffer = await window.crypto.subtle.encrypt(
-        {
-            name: 'RSA-OAEP',
-        },
-        importedPublicKey,
-        encodedMessage
-    )
+const AlgoMap : Record<Algorithms, AlgoConstructor> = {
+    'RSA-OAEP': RSA_OAEP,
+    // 'ECDH': '', // Todo
+    // 'ECDSA': '', // Todo
+}
 
-    const encryptedArray = Array.from(new Uint8Array(encryptedBuffer))
-    const encryptedBase64 = btoa(
-        String.fromCharCode.apply(null, encryptedArray)
-    )
-    return { encrypted: encryptedBase64 }
+export default function encrypter(algorithm: Algorithms): Encrypter {
+    const mapped = AlgoMap[algorithm]
+    return {
+        getJwkKeyPair: () => getJwkKeyPair(mapped),
+        encrypt: (publicKey: string, data: string) => encrypt(publicKey, data, mapped),
+        decrypt: (privateKey: string, data: string) => decrypt(privateKey, data, mapped),
+    }
+}
+
+async function getJwkKeyPair(algorithm: AlgoConstructor): Promise<JsonKeyPair> {
+    return new algorithm().getJwkKeyPair()
+}
+
+async function encrypt(publicKey: string, data: string, algorithm: AlgoConstructor): Promise<Encrypted> {
+    return new algorithm().encrypt(publicKey, data)
 }
 
 async function decrypt(
     privateKey: string,
-    encryptedData: string
+    encryptedData: string,
+    algorithm: AlgoConstructor
 ): Promise<Decrypted> {
-    const privateKeyObj = JSON.parse(privateKey)
-    const importedPrivateKey = await window.crypto.subtle.importKey(
-        'jwk',
-        privateKeyObj,
-        {
-            name: 'RSA-OAEP',
-            hash: 'SHA-256',
-        },
-        true,
-        ['decrypt']
-    )
-
-    const encryptedArray = Uint8Array.from(atob(encryptedData), (c) =>
-        c.charCodeAt(0)
-    )
-
-    const decryptedBuffer = await window.crypto.subtle.decrypt(
-        {
-            name: 'RSA-OAEP',
-        },
-        importedPrivateKey,
-        encryptedArray
-    )
-
-    const decoder = new TextDecoder()
-    const decryptedText = decoder.decode(decryptedBuffer)
-    return { decrypted: decryptedText }
+    return new algorithm().decrypt(privateKey, encryptedData)
 }

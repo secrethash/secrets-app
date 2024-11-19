@@ -25,7 +25,9 @@ import {
 import { logout } from '@/app/login/actions'
 import { toast } from '@/hooks/use-toast'
 import supabase from '@/lib/supabase'
-import { encrypter } from '@/lib/encrypter'
+import encrypter from '@/lib/encrypter'
+
+const enc = encrypter('RSA-OAEP')
 
 export function SecretSharingAppComponent() {
     const [publicKey, setPublicKey] = useState<string>('')
@@ -63,7 +65,7 @@ export function SecretSharingAppComponent() {
     }
 
     const generateKeyPair = async () => {
-        const { publicKey, privateKey } = await encrypter.getJwkKeyPair()
+        const { publicKey, privateKey } = await enc.getJwkKeyPair()
 
         const publicKeyString = JSON.stringify(publicKey, null, 2)
         let saved = true
@@ -102,7 +104,7 @@ export function SecretSharingAppComponent() {
 
     const encryptMessage = async () => {
         try {
-            const { encrypted } = await encrypter.encrypt(publicKey, message)
+            const { encrypted } = await enc.encrypt(publicKey, message)
             setEncryptedMessage(encrypted)
         } catch {
             toast({
@@ -118,7 +120,7 @@ export function SecretSharingAppComponent() {
 
     const decryptMessage = async () => {
         try {
-            const { decrypted } = await encrypter.decrypt(
+            const { decrypted } = await enc.decrypt(
                 privateKey,
                 encryptedMessage
             )
