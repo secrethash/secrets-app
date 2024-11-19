@@ -30,7 +30,7 @@ The encryption & decryption is done using `RSA-OAEP` algorithm, for which the ke
 
 - [x] **Persistence:** Add Supabase DB table to store Public Keys with titles
 - [x] **Authn:** Add Authentication using [Supabase Auth](https://supabase.com/docs/guides/auth/server-side/nextjs)
-- [ ] **Security:** Add ECDA (Elliptic Curve Digital Signature Algorithm) support to sign the encrypted secret for increased security
+- [ ] **Security:** Add ECDSA (Elliptic Curve Digital Signature Algorithm) or ECDH (Elliptic Curve Diffie-Hellman) support to sign the encrypted secrets for increased security
 - [ ] **Chore:** Cleanup application code style and structure (project was created as a Proof of Concept)
 - [ ] **Authz:** Limit fetch from supabase for authenticated & authorized users (something roles/permissions)
 
