@@ -1,8 +1,6 @@
-
-import type { Encrypted, Decrypted, AlgoLib } from "../encrypter";
+import type { Encrypted, Decrypted, AlgoLib } from '../encrypter'
 
 export default class RSA_OAEP implements AlgoLib {
-
     async generateKeyPair(): Promise<CryptoKeyPair> {
         const keyPair = await window.crypto.subtle.generateKey(
             {
@@ -41,10 +39,10 @@ export default class RSA_OAEP implements AlgoLib {
             true,
             ['encrypt']
         )
-    
+
         const encoder = new TextEncoder()
         const encodedMessage = encoder.encode(data)
-    
+
         const encryptedBuffer = await window.crypto.subtle.encrypt(
             {
                 name: 'RSA-OAEP',
@@ -52,15 +50,18 @@ export default class RSA_OAEP implements AlgoLib {
             importedPublicKey,
             encodedMessage
         )
-    
+
         const encryptedArray = Array.from(new Uint8Array(encryptedBuffer))
         const encryptedBase64 = btoa(
             String.fromCharCode.apply(null, encryptedArray)
         )
         return { encrypted: encryptedBase64 }
     }
-    
-    async decrypt(privateKey: string, encryptedData: string): Promise<Decrypted> {
+
+    async decrypt(
+        privateKey: string,
+        encryptedData: string
+    ): Promise<Decrypted> {
         const privateKeyObj = JSON.parse(privateKey)
         const importedPrivateKey = await window.crypto.subtle.importKey(
             'jwk',
@@ -72,11 +73,11 @@ export default class RSA_OAEP implements AlgoLib {
             true,
             ['decrypt']
         )
-    
+
         const encryptedArray = Uint8Array.from(atob(encryptedData), (c) =>
             c.charCodeAt(0)
         )
-    
+
         const decryptedBuffer = await window.crypto.subtle.decrypt(
             {
                 name: 'RSA-OAEP',
@@ -84,12 +85,9 @@ export default class RSA_OAEP implements AlgoLib {
             importedPrivateKey,
             encryptedArray
         )
-    
+
         const decoder = new TextDecoder()
         const decryptedText = decoder.decode(decryptedBuffer)
         return { decrypted: decryptedText }
     }
 }
-
-
-
