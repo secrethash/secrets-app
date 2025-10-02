@@ -56,7 +56,7 @@ async function encrypt(
     data: string,
     algorithm: AlgoConstructor
 ): Promise<Encrypted> {
-    return new algorithm().encrypt(publicKey, data)
+    return new algorithm().encrypt(atob(publicKey), data)
 }
 
 async function decrypt(
@@ -64,5 +64,5 @@ async function decrypt(
     encryptedData: string,
     algorithm: AlgoConstructor
 ): Promise<Decrypted> {
-    return new algorithm().decrypt(privateKey, encryptedData)
+    return new algorithm().decrypt(atob(privateKey), encryptedData)
 }

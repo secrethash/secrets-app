@@ -66,7 +66,8 @@ export function SecretSharingAppComponent() {
     const generateKeyPair = async () => {
         const { publicKey, privateKey } = await enc.getJwkKeyPair()
 
-        const publicKeyString = JSON.stringify(publicKey, null, 2)
+        const privateKeyString = btoa(JSON.stringify(privateKey, null, 2))
+        const publicKeyString = btoa(JSON.stringify(publicKey, null, 2))
         let saved = true
 
         if (savePublicKey && publicKeyTitle) {
@@ -80,7 +81,7 @@ export function SecretSharingAppComponent() {
             return
         }
         setPublicKey(publicKeyString)
-        setPrivateKey(JSON.stringify(privateKey, null, 2))
+        setPrivateKey(privateKeyString)
     }
 
     const savePublicKeyToSupabase = async (key: string, title: string) => {
